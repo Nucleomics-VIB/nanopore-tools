@@ -88,24 +88,26 @@ outbase=$(basename ${infile});
 outfile=${outbase%.f*};
 
 # echo "# (re-)creating reference index then aligning reads"
-cmd="graphmap align --threads ${nthr}\
+cmd1="graphmap align --threads ${nthr}\
 	--auto-rebuild-index ${circ}\
 	--error-rate ${errate} \
 	--evalue ${thresh} \
 	-r ${reference} \
-	-d ${infile} \
-	-o ${outpath}"/"${outfile}_alignments.sam"
-echo "# ${cmd}"
-eval ${cmd}
+	-d ${infile}"
+echo "# aligning: ${cmd1}"
 
 # fetching unmapped reads from alignments
 # samtools view -f 4 ${outfile}_alignments.sam > unmapped.sam
 # converting back to fastq
 # samtools fastq unmapped.sam | bgzip -c > cleaned_${outbase%.gz}.gz
 
-cmd="samtools view -f 4 ${outpath}"/"${outfile}_alignments.sam | samtools fastq - | bgzip -c > ${outpath}"/"cleaned_${outbase%.gz}.gz"
-echo "# ${cmd}"
-eval ${cmd}
+cmd2="samtools view -f 4 - | samtools fastq - | bgzip -c > ${outpath}/cleaned_${outbase%.gz}.gz"
+echo "# filtering: ${cmd2}"
+
+# merge both commands to reduce output size
+mrgcmd="${cmd1} | ${cmd2}"
+echo "# merged command: ${mrgcmd}"
+eval ${mrgcmd}
 
 exit 0
 
