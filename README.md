@@ -6,17 +6,18 @@
 
 Please refer to the accompanying **[wiki](https://github.com/Nucleomics-VIB/nanopore-tools/wiki)** for examples and workflows.
 
-### **spike_clean.sh**
+### **spike_filter.sh**
 
-**[spike_clean.sh](spike_clean.sh)** aligns all reads from a MinION dataset to a reference genome (lambda) with **[graphmap](https://github.com/isovic/graphmap)** to identify and remove spiked sequences. It then create a new fastq.gz file with unmapped reads,that can be assembled using canu.
+**[spike_filter.sh](spike_filter.sh)** aligns all reads from a MinION dataset to a reference genome (lambda) with **[graphmap](https://github.com/isovic/graphmap)** to identify spiked sequences. It then create a new fastq.gz file with either mapped or unmapped reads, that can be assembled using canu or used elsewhere.
 
 ```bash
-Usage: spike_clean.sh 
+Usage: spike_filter.sh 
 #   -i <nanopore_reads.fastq (required)>
 #   -r <spiked reference (lambda or any other spiked genome, required)>
 #   -t <graphmap alignment threshold (default to 1e-0)>
 #   -e <read error rate (default to 0.45)>
 #   -C <the spiked genome is circular (default OFF = linear)>
+#   -s <keep only spiked reads instead (reverse-mode)>
 #   -h <show this help>
 ```
 
