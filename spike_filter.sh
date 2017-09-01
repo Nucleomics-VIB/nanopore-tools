@@ -89,8 +89,10 @@ fi
 # filter out or keep the spiked alignments
 if [ -n "${keepspiked}" ]; then
 samfilter="-F 4"
+prefix="spiked"
 else
 samfilter="-f 4"
+prefix="filtered"
 fi
 
 # threads
@@ -121,9 +123,9 @@ echo "# aligning: ${cmd1}"
 # fetching unmapped reads from alignments
 # samtools view ${samfilter} ${outpath}${outfile}_alignments.sam > ${outpath}/unmapped.sam
 # converting back to fastq
-# samtools fastq ${outpath}/unmapped.sam | bgzip -c > ${outpath}/filtered_${outbase%.gz}.gz
+# samtools fastq ${outpath}/unmapped.sam | bgzip -c > ${outpath}/${prefix}_${outbase%.gz}.gz
 
-cmd2="samtools view ${samfilter} -bS - | samtools fastq - | bgzip -c > ${outpath}/filtered_${outbase%.gz}.gz"
+cmd2="samtools view ${samfilter} -bS - | samtools fastq - | bgzip -c > ${outpath}/${prefix}_${outbase%.gz}.gz"
 echo "# filtering: ${cmd2}"
 
 ##################################################################
@@ -133,8 +135,8 @@ echo "# merged command: ${mrgcmd}"
 eval ${mrgcmd}
 
 echo
-echo "# reads in the input: "$(zgrep -c "^@" ${infile}
-echo "# filtered reads    : "$(zgrep -c "^@" ${outpath}/filtered_${outbase%.gz}.gz)
+echo "# reads in the input: $(zgrep -c "^@" ${infile})"
+echo "# filtered reads    : $(zgrep -c "^@" ${outpath}/${prefix}_${outbase%.gz}.gz)"
 
 exit 0
 
