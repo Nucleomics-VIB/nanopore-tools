@@ -8,7 +8,7 @@ Please refer to the accompanying **[wiki](https://github.com/Nucleomics-VIB/nano
 
 ### **spike_clean.sh**
 
-**[spike_clean.sh](filesender-cmd.sh)** aligns all reads from a MinION dataset to a reference genome (lambda) with (**graphmap**)[https://github.com/isovic/graphmap] to identify and remove spiked sequences. It then create a new fastq.gz file with unmapped reads,that can be assembled using canu.
+**[spike_clean.sh](filesender-cmd.sh)** aligns all reads from a MinION dataset to a reference genome (lambda) with **[graphmap](https://github.com/isovic/graphmap) to identify and remove spiked sequences. It then create a new fastq.gz file with unmapped reads,that can be assembled using canu.
 
 ```bash
 Usage: spike_clean.sh 
