@@ -16,9 +16,10 @@ read -d '' usage <<- EOF
 Usage: spike_filter.sh 
 #   -i <nanopore_reads.fastq (required)>
 #   -r <spiked reference (lambda or any other spiked genome, required)>
-#   -t <graphmap alignment threshold (default to 1e-0)>
+#   -z <graphmap alignment threshold (default to 1e-0)>
 #   -e <read error rate (default to 0.45)>
 #   -C <the spiked genome is circular (default OFF = linear)>
+#   -t <threads to be used for alignment (default to 8)>
 #   -s <keep only spiked reads instead (reverse-mode)>
 #   -h <show this help>
 EOF
