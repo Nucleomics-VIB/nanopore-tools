@@ -25,41 +25,41 @@ Usage: spike_filter.sh
 EOF
 
 while getopts "i:r:t:e:Csh" opt; do
-  case $opt in
-    i)
-      infile=${OPTARG}
-      ;;
-    r)
-      reference=${OPTARG}
-      ;;
-	z)
-	  evalue=${OPTARG}
-	  ;;
-	e)
-	  errorrate=${OPTARG}
-	  ;;
-	C)
-	  circular=1
-	  ;;
-	t)
-	  threads=${OPTARG}
-	  ;;
-	s)
-	  keepspiked=1
-	  ;;
-    h)
-      echo "${usage}"
-      exit 0
-      ;;      
-    \?)
-      echo "${usage}"
-      exit 1
-      ;;
-    *)
-      echo "${usage}" >&2
-      exit 1
-      ;;
-  esac
+	case $opt in
+		i)
+		  infile=${OPTARG}
+		  ;;
+		r)
+		  reference=${OPTARG}
+		  ;;
+		z)
+		  evalue=${OPTARG}
+		  ;;
+		e)
+		  errorrate=${OPTARG}
+		  ;;
+		C)
+		  circular=1
+		  ;;
+		t)
+		  threads=${OPTARG}
+		  ;;
+		s)
+		  keepspiked=1
+		  ;;
+		h)
+		  echo "${usage}"
+		  exit 0
+		  ;;      
+		\?)
+		  echo "${usage}"
+		  exit 1
+		  ;;
+		*)
+		  echo "${usage}" >&2
+		  exit 1
+		  ;;
+	esac
 done
 
 # test if minimal arguments were provided
