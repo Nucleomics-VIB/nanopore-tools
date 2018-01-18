@@ -18,8 +18,8 @@ Usage: spike_filter.sh
 #   -r <spiked reference (lambda or any other spiked genome, required)>
 #   -z <graphmap alignment threshold (default to 1e-0)>
 #   -e <read error rate (default to 0.45)>
-#   -C <the spiked genome is circular (default OFF = linear)>
 #   -t <threads to be used for alignment (default to 8)>
+#   -C <the spiked genome is circular (default OFF = linear)>
 #   -s <keep only spiked reads instead (reverse-mode)>
 #   -h <show this help>
 EOF
@@ -38,11 +38,11 @@ while getopts "i:r:t:e:Csh" opt; do
 		e)
 		  errorrate=${OPTARG}
 		  ;;
-		C)
-		  circular=1
-		  ;;
 		t)
 		  threads=${OPTARG}
+		  ;;
+		C)
+		  circular=1
 		  ;;
 		s)
 		  keepspiked=1
