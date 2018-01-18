@@ -50,7 +50,7 @@ while getopts "i:r:t:e:Csh" opt; do
 		h)
 		  echo "${usage}"
 		  exit 0
-		  ;;      
+		  ;;
 		\?)
 		  echo "${usage}"
 		  exit 1
