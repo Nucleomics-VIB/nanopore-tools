@@ -93,7 +93,7 @@ samfilter="-F 4"
 prefix="spiked"
 else
 samfilter="-f 4"
-prefix="filtered"
+prefix="mm2_filtered"
 fi
 
 # threads
