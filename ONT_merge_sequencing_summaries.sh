@@ -22,6 +22,6 @@ if [ -z "${path}" ]; then
    exit 1
 fi
 
-(head -1 ${path}/sequencing_summary_1.txt; 
+(head -1 ${path}/sequencing_summary_1.txt; \
   find ${path} -name "sequencing_summary_*.txt" -exec sed -e '1d' {} \;) \
   > ${prefix}sequencing_summary.txt
