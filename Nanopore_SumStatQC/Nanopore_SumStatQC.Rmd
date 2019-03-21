@@ -1,5 +1,5 @@
 ---
-title: "Nanopore summary statistics and basic QC tutorial"
+title: "Nanopore summary statistics and basic QC"
 date: "Report created: `r Sys.Date()`"
 output:
   html_document:
