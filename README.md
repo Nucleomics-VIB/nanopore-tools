@@ -37,6 +37,7 @@ Usage: spike_filter_minimap2.sh
 ```bash
 # Usage: run_chopchop_single.sh
 # -r <region (eg. chr1:16920000-16940000)>
+# -g <reference genome used by ChopChop (default to hg38)>
 # -w <prediction window (default to 3000bps either side)>
 # -m <median DNA fragment size (default 30000)>
 # script version 1.0, 2019_06_12
@@ -48,6 +49,7 @@ Usage: spike_filter_minimap2.sh
 ```bash
 # Usage: run_chopchop_tiled.sh
 # -r <region (eg. chr1:16740273-16972964)>
+# -g <reference genome used by ChopChop (default to hg38)>
 # -s <tile width (default to 20000)>
 # -w <prediction window (default to 1500 either side)>
 # -m <median DNA fragment size (default 30000)>
