@@ -128,7 +128,7 @@ while read rchr rstart rend; do
 	echo "# => found $(($(wc -l ${pfx}/upstream_results.txt|cut -d" " -f1)-1)) candidates of which $(($(wc -l ${pfx}/upstream_results-filtered.txt|cut -d" " -f1)-1)) HQ hits"
 
 	# create BED from filtered
-	gawk -v tile=${tile} 'BEGIN{FS="\t"; OFS="\t"}{if (NR>1 && $4~/+/ && $6==0 && $11>0.3) {split($3, a, ":"); print a[1], a[2], a[2]+23, tile"_ups:"$1, $11, $4, a[2], a[2]+23, "255,0,0"}}' \
+	gawk -v tile=${tile} 'BEGIN{FS="\t"; OFS="\t"}{if (NR>1 && $4~/+/ && $6==0 && $11>0.3) {split($3, a, ":"); print a[1], a[2]-1, a[2]+22, tile"_ups:"$1, $11, $4, a[2]-1, a[2]+22, "255,0,0"}}' \
 	${pfx}/upstream_results.txt \
 	> ${pfx}/filtered_guides.bed
 
@@ -168,7 +168,7 @@ while read rchr rstart rend; do
 	echo "# => found $(($(wc -l ${pfx}/downstream_results.txt|cut -d" " -f1)-1)) candidates of which $(($(wc -l ${pfx}/downstream_results-filtered.txt|cut -d" " -f1)-1)) HQ hits"
 	
 	# create BED from filtered
-	gawk -v tile=${tile} 'BEGIN{FS="\t"; OFS="\t"}{if (NR>1 && $4~/-/ && $6==0 && $11>0.3) {split($3, a, ":"); print a[1], a[2], a[2]+23, tile"_dwn:"$1, $11, $4, a[2], a[2]+23, "0,0,255"}}' \
+	gawk -v tile=${tile} 'BEGIN{FS="\t"; OFS="\t"}{if (NR>1 && $4~/-/ && $6==0 && $11>0.3) {split($3, a, ":"); print a[1], a[2]-1, a[2]+22, tile"_dwn:"$1, $11, $4, a[2]-1, a[2]+22, "0,0,255"}}' \
 	${pfx}/downstream_results.txt \
 	>> ${pfx}/filtered_guides.bed
 	
@@ -181,6 +181,6 @@ echo "browser position ${region}" > ${mergedbed}
 echo -e "track name=CHOPCHOP_tiled description=${region} visibility=\"pack\" itemRgb=\"On\"" >> ${mergedbed}
 # add all filtered bed files
 find ${basedir} -name filtered_guides.bed -exec cat {} >> ${mergedbed} \;
-gawk 'BEGIN{FS="\t"; OFS="\t"}{print $1, $2, $3, "ROI_tile:"NR, 0, "+", $2, $3, "0,255,0"}' \
+gawk 'BEGIN{FS="\t"; OFS="\t"}{print $1, $2-1, $3, "ROI_tile:"NR, 0, "+", $2-1, $3, "0,255,0"}' \
 ${basedir}/tmp.regions.bed >> ${mergedbed}
-bedtools sort -header -i ${mergedbed} > ${sortedbed} && rm ${basedir}/tmp.*.bed
+bedtools sort -header -i ${mergedbed} > ${sortedbed} && rm ${basedir}/tmp*.bed
