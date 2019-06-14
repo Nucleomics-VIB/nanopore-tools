@@ -19,7 +19,7 @@ usage='# Usage: run_chopchop_tiled.sh
 # script version '${version}'
 # [-h for this help]'
 
-while getopts "r:w:m:h" opt; do
+while getopts "r:s:w:m:h" opt; do
   case $opt in
     r) optr=${OPTARG} ;;
     s) opts=${OPTARG} ;;
@@ -41,7 +41,7 @@ done
 datetag=$(date +%s)
 basedir="run_chopchop_tiled_${datetag}_data"
 mkdir -p ${basedir}
-exec &> >(tee -a "${basedir}/run_chopchop_tiled_${datetag}.log")
+exec &> >(tee -a "${basedir}/run_chopchop_tiled.log")
 
 # provide the region to be captured (start to end shorter than 20kb)
 region=${optr:-"chr1:16921950-16972979"}
@@ -176,6 +176,6 @@ echo "browser position ${region}" > ${mergedbed}
 echo -e "track name=CHOPCHOP_tiled description=${region} visibility=\"pack\" itemRgb=\"On\"" >> ${mergedbed}
 # add all filtered bed files
 find ${basedir} -name filtered_guides.bed -exec cat {} >> ${mergedbed} \;
-gawk 'BEGIN{FS="\t"; OFS="\t"}{print $1, $2, $3, "tile:"NR, 0, "+", $2, $3, "0,255,0"}' \
+gawk 'BEGIN{FS="\t"; OFS="\t"}{print $1, $2, $3, "ROI_tile:"NR, 0, "+", $2, $3, "0,255,0"}' \
 ${basedir}/tmp.regions.bed >> ${mergedbed}
 bedtools sort -header -i ${mergedbed} > ${sortedbed} && rm ${basedir}/tmp.*.bed
