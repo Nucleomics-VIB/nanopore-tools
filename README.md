@@ -48,10 +48,12 @@ Usage: spike_filter_minimap2.sh
 
 Run this script twice with a shift of -s/2 kb in order to select guides for two separate reactions. The two Cas9 reactions performed on separate DNA aliquotes can be mixed and sequenced together to lead to overlapping read pilups as shown below.
 
+```
 setA:
 -------- -------- -------- --------
 setB
     -------- -------- -------
+```
 
 ```bash
 # Usage: run_chopchop_tiled.sh
