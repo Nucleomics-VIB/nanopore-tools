@@ -2,6 +2,7 @@
 # script name: run_chopchop_single.sh
 # enrich a region with ONT Cas9
 # run chopchop prediction upstream and downstream of the region
+# REM: chopchop should have the reference genome
 # produce a BED file with filtered sgRNAs for IGV visualisation
 # REM: run the tile version of this script if teh region is larger tnan 30kb
 #
@@ -13,14 +14,16 @@ version="1.0, 2019_06_12"
 
 usage='# Usage: run_chopchop_single.sh
 # -r <region (eg. chr1:16920000-16940000)>
+# -g <reference genome used by ChopChop (default to hg38)>
 # -w <prediction window (default to 3000bps either side)>
 # -m <median DNA fragment size (default 30000)>
 # script version '${version}'
 # [-h for this help]'
 
-while getopts "r:w:m:h" opt; do
+while getopts "r:g:w:m:h" opt; do
   case $opt in
     r) optr=${OPTARG} ;;
+    g) optg=${OPTARG} ;;
     w) optw=${OPTARG} ;;
     m) optm=${OPTARG} ;;
     h) echo "${usage}" >&2; exit 0 ;;
@@ -59,6 +62,9 @@ echo "# The region is too large (${width} bps) for a single sgRNA pair, consider
 exit 0
 fi
 
+# define reference genome or take default hg38 (should be installed on your machine)
+refg=${optg:-"hg38"}
+
 # default primer3 settings
 primer3args='PRODUCT_SIZE_MIN=150,PRODUCT_SIZE_MAX=290,PRIMER_MIN_SIZE=18,PRIMER_MAX_SIZE=25,PRIMER_OPT_SIZE=22,PRIMER_MIN_TM=57,PRIMER_MAX_TM=63,PRIMER_OPT_TM=60'
 backbone="AGGCTAGTCCGT"
@@ -90,7 +96,7 @@ chopchop.py -J \
 		-f NN \
 		--backbone ${backbone} \
 		--replace5P GG \
-		-G hg38 \
+		-G ${refg} \
 		-t WHOLE \
 		-n N \
 		-R 4 \
@@ -130,7 +136,7 @@ chopchop.py -J \
 		-f NN \
 		--backbone ${backbone} \
 		--replace5P GG \
-		-G hg38 \
+		-G ${refg} \
 		-t WHOLE \
 		-n N \
 		-R 4 \

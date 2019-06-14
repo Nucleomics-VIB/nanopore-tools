@@ -13,15 +13,17 @@ version="1.0, 2019_06_12"
 
 usage='# Usage: run_chopchop_tiled.sh
 # -r <region (eg. chr1:16740273-16972964)>
+# -g <reference genome used by ChopChop (default to hg38)>
 # -s <tile width (default to 20000)>
 # -w <prediction window (default to 1500 either side)>
 # -m <median DNA fragment size (default 30000)>
 # script version '${version}'
 # [-h for this help]'
 
-while getopts "r:s:w:m:h" opt; do
+while getopts "r:g:s:w:m:h" opt; do
   case $opt in
     r) optr=${OPTARG} ;;
+    g) optg=${OPTARG} ;;
     s) opts=${OPTARG} ;;
     w) optw=${OPTARG} ;;
     m) optm=${OPTARG} ;;
@@ -62,6 +64,9 @@ echo "# The region is too short (${width} bps) for tiled sgRNA pairs, consider r
 exit 0
 fi
 
+# define reference genome or take default hg38 (should be installed on your machine)
+refg=${optg:-"hg38"}
+
 # create genome regions in steps of $steps
 bedtools makewindows -b <(echo -e ${chr}$'\t'${start}$'\t'${end}) -w ${steps} > ${basedir}/tmp.regions.bed
 
@@ -99,7 +104,7 @@ while read rchr rstart rend; do
 			-f NN \
 			--backbone ${backbone} \
 			--replace5P GG \
-			-G hg38 \
+			-G ${refg} \
 			-t WHOLE \
 			-n N \
 			-R 4 \
@@ -139,7 +144,7 @@ while read rchr rstart rend; do
 			-f NN \
 			--backbone ${backbone} \
 			--replace5P GG \
-			-G hg38 \
+			-G ${refg} \
 			-t WHOLE \
 			-n N \
 			-R 4 \
