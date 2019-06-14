@@ -51,7 +51,7 @@ Run this script twice with a shift of -s/2 kb in order to select guides for two 
 ```
 setA:
 -------- -------- -------- --------
-setB
+setB:
     -------- -------- -------
 ```
 
