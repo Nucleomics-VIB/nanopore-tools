@@ -32,7 +32,7 @@ Usage: spike_filter_minimap2.sh
 #   -h <show this help>
 ```
 
-**[run_chopchop_single.sh](run_chopchop_single.sh)** design sgRNA around a region of interest (ROI) for ONT Cas9 enrichment. The value of -w is indicative of the ONT molecule average size and only used to stop the code when the requested capture is smaller than the actual DNA molecules.
+**[run_chopchop_single.sh](run_chopchop_single.sh)** design sgRNA around a region of interest (ROI) for ONT Cas9 enrichment. The value of -m is indicative of the ONT molecule average size and only used to stop the code when the requested capture is smaller than the actual DNA molecules.
 
 ```bash
 # Usage: run_chopchop_single.sh
@@ -44,7 +44,7 @@ Usage: spike_filter_minimap2.sh
 # [-h for this help]
 ```
 
-**[run_chopchop_tiled.sh](run_chopchop_tiled.sh)** design sgRNA around a large region of interest (ROI) for ONT Cas9 enrichment. Predict in tiles of width -w to cover more than -s kb enrichment. Run this script twice with a shift of -s/2 kb in order to obtain reagents for two reactions and final overlap. The value of -w is indicative of the ONT molecule average size and only used to stop the code when the requested capture is smaller than the actual DNA molecules.
+**[run_chopchop_tiled.sh](run_chopchop_tiled.sh)** design sgRNA around a large region of interest (ROI) for ONT Cas9 enrichment. Predict in tiles of width -w to cover more than -s kb enrichment. Run this script twice with a shift of -s/2 kb in order to obtain reagents for two reactions and final overlap. The value of -m is indicative of the ONT molecule average size and only used to stop the code when the requested capture is smaller than the actual DNA molecules.
 
 ```bash
 # Usage: run_chopchop_tiled.sh
