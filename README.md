@@ -32,6 +32,29 @@ Usage: spike_filter_minimap2.sh
 #   -h <show this help>
 ```
 
+**[run_chopchop_single.sh](run_chopchop_single.sh)** design sgRNA around a region of interest (ROI) for ONT Cas9 enrichment.
+
+```bash
+# Usage: run_chopchop_single.sh
+# -r <region (eg. chr1:16920000-16940000)>
+# -w <prediction window (default to 3000bps either side)>
+# -m <median DNA fragment size (default 30000)>
+# script version 1.0, 2019_06_12
+# [-h for this help]
+```
+
+**[run_chopchop_tiled.sh](run_chopchop_tiled.sh)** design sgRNA around a large region of interest (ROI) for ONT Cas9 enrichment. Predict in tiles of width -w to cover more than 30kb enrichment. Run this script twice with a shift of 15kb in order to obtain reagents for two reactions and final overlap.
+
+```bash
+# Usage: run_chopchop_tiled.sh
+# -r <region (eg. chr1:16740273-16972964)>
+# -s <tile width (default to 20000)>
+# -w <prediction window (default to 1500 either side)>
+# -m <median DNA fragment size (default 30000)>
+# script version 1.0, 2019_06_12
+# [-h for this help]
+```
+
 <hr>
 
 <h4>Please send comments and feedback to <a href="mailto:nucleomics.bioinformatics@vib.be">nucleomics.bioinformatics@vib.be</a></h4>
