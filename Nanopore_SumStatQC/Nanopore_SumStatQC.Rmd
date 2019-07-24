@@ -50,6 +50,8 @@ Organism         <- config$Organism
 FlowCellType   <- config$flowcellType
 FlowCellID     <- config$flowcellId
 SequencingKit  <- config$seqKit
+sampleHours <- config$sampleHours ;# 48
+sampleIntervalMinutes <- config$sampleIntervalMinutes ;# 60
 
 # core parameters used for the presentation and configuration of report
 # not to be moved to config.yaml (yet)
@@ -425,8 +427,9 @@ sequencedata$start_time <- sequencedata$start_time - min(sequencedata$start_time
 sequencedata$start_time <- sequencedata$start_time / scaling
 
 # assuming a 48 hour run, 5 minute intervals
-sampleHours = 48
-sampleIntervalMinutes = 60
+# SP:2019-07-24 both now defined from config.yaml, see top of this script
+# sampleHours = 48
+# sampleIntervalMinutes = 60
 
 breaks = seq(0, sampleHours*60*60, by=60*sampleIntervalMinutes)
 binass <- findInterval(sequencedata$start_time, breaks)

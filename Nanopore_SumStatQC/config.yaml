@@ -7,6 +7,8 @@ flowcellId: "FAK00000"
 flowcellType: "FLO-MIN106"
 seqKit: "SQK-LSK108"
 tutorialText: FALSE
+sampleHours: 48
+sampleIntervalMinutes: 60
 
 # **inputFile** - this should be the sequencing_summary.txt from Guppy etc
 # move your own sequence_summary.txt file (or concatenation thereof) to the
