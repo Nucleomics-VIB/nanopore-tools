@@ -1,6 +1,6 @@
 #!/bin/bash
 # run ONT QC on basecalling summary files(s)
-# runQC <data.bz2> <FlowCell-ID> <barcodes.bz2>
+# runQC <data> <FlowCell-ID> <barcodes>
 # edit additional variables in the created config.yaml
 
 working=$(pwd)
