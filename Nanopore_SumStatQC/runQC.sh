@@ -1,5 +1,7 @@
 #!/bin/bash
 # run ONT QC on basecalling summary files(s)
+# runQC <data.bz2> <FlowCell-ID> <barcodes.bz2>
+# edit additional variables in the created config.yaml
 
 working=$(pwd)
 script_base=$(dirname $0)
@@ -20,11 +22,17 @@ else
 bcfile=""
 fi
 
-echo "inputFile: \"${infile}\"
+echo "expRef: \"My fantastic experiment\"
+Organism: \"NA\"
+inputFile: \"${infile}\"
 barcodeFile: \"${bcfile}\"
-basecaller:  \"Guppy 2.0.10 GPU\"
-flowcellId:  \"$2\"
-tutorialText: FALSE" > config.yaml
+basecaller: \"Guppy 2.0.10 - X5-GPU\"
+flowcellId: \"$2\"
+flowcellType: \"FLO-MIN106\"
+seqKit: \"SQK-LSK108\"
+tutorialText: FALSE
+sampleHours: 48
+sampleIntervalMinutes: 60" | tee config.yaml
 
 cp config.yaml $(dirname $0)/
 
