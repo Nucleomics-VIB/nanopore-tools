@@ -1,23 +1,11 @@
 expRef: "My fantastic experiment"
 Organism: "NA"
-inputFile: "sequencing_summary.txt"
-barcodeFile: ""
+inputFile: "/Users/splaisan/git_repos/Nucleomics-VIB/nanopore-tools/Nanopore_SumStatQC/RawData/data.bz2.bz2"
+barcodeFile: "/Users/splaisan/git_repos/Nucleomics-VIB/nanopore-tools/Nanopore_SumStatQC/RawData/barcodes.bz2.bz2"
 basecaller: "Guppy 2.0.10 - X5-GPU"
-flowcellId: "FAK00000"
+flowcellId: "FlowCell-ID"
 flowcellType: "FLO-MIN106"
 seqKit: "SQK-LSK108"
 tutorialText: FALSE
 sampleHours: 48
 sampleIntervalMinutes: 60
-
-# **inputFile** - this should be the sequencing_summary.txt from Guppy etc
-# move your own sequence_summary.txt file (or concatenation thereof) to the
-# RawData folder to run analysis on your own sequence collection
-
-# **barcodeFile** - if Guppy_barcoder has been used to demultiplex library,
-# move the barcoding_summary.txt file to the RawData folder and update variable
-
-# **basecaller** and **flowcellId** - are used for presentation in report
-# please update to correspond to your sequence analysis
-
-# change the **tutorialText** value to FALSE to mask  tutorial instructions
