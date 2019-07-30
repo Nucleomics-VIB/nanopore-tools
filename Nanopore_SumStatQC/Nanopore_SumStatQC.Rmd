@@ -52,6 +52,7 @@ FlowCellID     <- config$flowcellId
 SequencingKit  <- config$seqKit
 sampleHours <- config$sampleHours ;# 48
 sampleIntervalMinutes <- config$sampleIntervalMinutes ;# 60
+readlenpercentile <- ifelse(is.null(config$readlenpercentile), 0.975, config$readlenpercentile) # 0.975
 
 # core parameters used for the presentation and configuration of report
 # not to be moved to config.yaml (yet)
@@ -155,7 +156,7 @@ knitr::include_graphics(file.path("Results", "ExecutiveSummaryValueBoxes.png"), 
 
 ```
 
-Basecalling was performed using the **`r config$basecaller`** software. Called reads were classified as either pass or fail depending on their mean quality score. For this analysis, a total of `r formatC(nrow(sequencedata), big.mark=",")` reads were basecalled and of these `r formatC(nrow(passedSeqs), big.mark=",")` (`r round(nrow(passedSeqs) / nrow(sequencedata) * 100, 1)`%) were passed as satsifying the quality metric. The passed reads contain a total of `r round(passedBases, 2)` Gb of DNA sequence. This passed-fraction amounts to `r round(passedBases / totalBases * 100, 1)`% of the total DNA nucleotide bases sequenced.
+Basecalling was performed using the **`r config$basecaller`** software. Called reads were classified as either pass or fail depending on their mean quality score. For this analysis, a total of `r formatC(nrow(sequencedata), big.mark=",")` reads were basecalled and of these `r formatC(nrow(passedSeqs), big.mark=",")` (`r round(nrow(passedSeqs) / nrow(sequencedata) * 100, 1)`%) were passed as satisfying the quality metric. The passed reads contain a total of `r round(passedBases, 2)` Gb of DNA sequence. This passed-fraction amounts to `r round(passedBases / totalBases * 100, 1)`% of the total DNA nucleotide bases sequenced.
 
 ```{r qcPassGauge, echo=FALSE, include=TRUE, fig.align="center", fig.width=4}
 df <- data.frame(matrix(nrow=1, ncol = 3))
@@ -311,7 +312,8 @@ roundUpNice <- function(x, nice=seq(from=1, to=10, by=0.25)) {
 
 # pick a friendly upper limit to render sequence lengths into a histogram
 # here we're aiming for a robustly rounded up 97.5 quantile of the data (skip a few outliers ...)
-upperLimit <- roundUpNice(as.numeric(quantile(x=sequencedata$sequence_length_template, probs=c(0.975))))
+# upperLimit <- roundUpNice(as.numeric(quantile(x=sequencedata$sequence_length_template, probs=c(0.975))))
+upperLimit <- roundUpNice(as.numeric(quantile(x=sequencedata$sequence_length_template, probs=c(readlenpercentile))))
 
 # an ideal histogram will have 40 or so bins
 histogramBinCount <- 40

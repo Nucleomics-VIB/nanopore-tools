@@ -5,7 +5,10 @@ barcodeFile: "RawData/barcodes.bz2"
 basecaller: "Guppy 2.0.10 - X5-GPU"
 flowcellId: "FlowCell-ID"
 flowcellType: "FLO-MIN106"
-seqKit: "SQK-LSK108"
+seqKit: "SQK-LSK109"
 tutorialText: FALSE
 sampleHours: 48
 sampleIntervalMinutes: 60
+# read length percentile limit, default to 0.975 to remove outliers
+readlenpercentile: 1
+
