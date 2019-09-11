@@ -17,7 +17,7 @@ bgzip -c $1 > ${infile}
 if [[ ! -z "$3" ]]; then
 echo "# processing barcodes from $3"
 bcfile="${working}/RawData/$(basename $3).bz2"
-bgzip -c $3 > ${bcfile}
+bzip2 -z -c $3 > ${bcfile}
 else
 bcfile=""
 fi
