@@ -26,6 +26,7 @@ bibliography: Static/Bibliography.bib
 knitr::opts_chunk$set(fig.width=9, fig.height=6, warning=FALSE, message=FALSE, tidy = FALSE, cache.extra = packageVersion('tufte'), cache.path = "Results/KnitR")
 options(htmltools.dir.version = FALSE)
 
+library(R.utils)
 library(data.table)
 library(digest)
 library(dplyr)
