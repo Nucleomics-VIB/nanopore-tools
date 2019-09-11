@@ -32,7 +32,9 @@ flowcellType: \"FLO-MIN106\"
 seqKit: \"SQK-LSK108\"
 tutorialText: FALSE
 sampleHours: 48
-sampleIntervalMinutes: 60" | tee config.yaml
+sampleIntervalMinutes: 60
+# read length percentile limit, default to 0.975 to remove outliers
+readlenpercentile: 0.975" | tee config.yaml
 
 cp config.yaml $(dirname $0)/
 
