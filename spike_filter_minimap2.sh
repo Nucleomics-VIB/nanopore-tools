@@ -136,10 +136,15 @@ mrgcmd="${cmd1} | ${cmd2}"
 echo "# merged command: ${mrgcmd}"
 eval ${mrgcmd}
 
-echo
-echo "# reads in the input: $(zgrep -c "^@" ${infile})"
-echo "# filtered reads    : $(zgrep -c "^@" ${outpath}/${prefix}_${outbase%.gz}.gz)"
+# count reads
+incnt=$(zgrep -c "^@" ${infile})
+outcnt=$(zgrep -c "^@" ${outpath}/${prefix}_${outbase%.gz}.gz)
+difcnt=$(echo "${incnt}-${outcnt}" | bc)
 
+echo
+echo "# reads in the input : ${incnt}"
+echo "# filtered reads     : ${outcnt}"
+echo "# omitted reads      : ${difcnt}"
 exit 0
 
 ################################################################################################################################
