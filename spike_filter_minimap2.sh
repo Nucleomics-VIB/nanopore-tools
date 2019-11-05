@@ -139,7 +139,7 @@ eval ${mrgcmd}
 # count reads
 incnt=$(zgrep -c "^@" ${infile})
 outcnt=$(zgrep -c "^@" ${outpath}/${prefix}_${outbase%.gz}.gz)
-difcnt=$(echo "${incnt}-${outcnt}" | bc)
+difcnt=$(echo "${incnt}-${outcnt}" |bc)
 
 echo
 echo "# reads in the input : ${incnt}"
