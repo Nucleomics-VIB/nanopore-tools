@@ -1,13 +1,13 @@
 expRef: "My fantastic experiment"
 Organism: "NA"
 inputFile: "RawData/data.bz2"
-barcodeFile: "RawData/barcodes.bz2"
-basecaller: "Guppy 2.0.10 - X5-GPU"
-flowcellId: "FlowCell-ID"
+barcodeFile: ""
+basecaller: "Guppy 3.2.6 - X5 Mk1-GPU (hac)"
+flowcellId: "<edit here>"
 flowcellType: "FLO-MIN106"
-seqKit: "SQK-LSK109"
+seqKit: "SQK-RAD004/SQK-LSK109"
 tutorialText: FALSE
-sampleHours: 48
+sampleHours: 72
 sampleIntervalMinutes: 60
 # read length percentile limit, default to 0.975 to remove outliers
 readlenpercentile: 1
