@@ -20,7 +20,7 @@ Usage: spike_filter.sh
 #   -s <keep only spiked reads instead (reverse-mode)>
 #   -h <show this help>
 ```
-**[spike_filter_minimap2.sh](spike_filter_minimap2.sh)** aligns all reads from a MinION dataset to a reference genome [eg lambda:](https://www.ncbi.nlm.nih.gov/nuccore/J02459.1?report=fasta) with **[minimap2](https://github.com/lh3/minimap2)** to identify spiked sequences and creates a new fastq.gz file using **samtools** and either mapped or unmapped reads, that can be assembled using **canu** or used elsewhere.
+**[spike_filter_minimap2.sh](spike_filter_minimap2.sh)** aligns all reads from a MinION dataset to a reference genome [eg lambda:](https://www.ncbi.nlm.nih.gov/nuccore/NC_001416.1?report=fasta) (NC_001416.1) with **[minimap2](https://github.com/lh3/minimap2)** to identify spiked sequences and creates a new fastq.gz file using **samtools** and either mapped or unmapped reads, that can be assembled using **canu** or used elsewhere.
 
 ```bash
 Usage: spike_filter_minimap2.sh
