@@ -8,7 +8,7 @@ Please refer to the accompanying **[wiki](https://github.com/Nucleomics-VIB/nano
 
 ### **spike_filter.sh**
 
-**[spike_filter.sh](spike_filter.sh)** aligns all reads from a MinION dataset to a reference genome [eg lambda:](https://www.ncbi.nlm.nih.gov/nuccore/J02459.1?report=fasta) with **[graphmap](https://github.com/isovic/graphmap)** to identify spiked sequences and creates a new fastq.gz file using **samtools** and either mapped or unmapped reads, that can be assembled using **canu** or used elsewhere.
+**[spike_filter.sh](spike_filter.sh)** aligns all reads from a MinION dataset to a reference genome [eg lambda:](https://www.ncbi.nlm.nih.gov/nuccore/NC_001416.1?report=fasta) with **[graphmap](https://github.com/isovic/graphmap)** to identify spiked sequences and creates a new fastq.gz file using **samtools** and either mapped or unmapped reads, that can be assembled using **canu** or used elsewhere.
 
 ```bash
 Usage: spike_filter.sh 
