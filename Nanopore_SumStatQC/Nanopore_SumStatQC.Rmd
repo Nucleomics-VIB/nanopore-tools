@@ -84,6 +84,7 @@ slurpContent <- function(filename) {
 `r slurpContent("Static/TutorialPreamble.md")`
 
 # Executive summary
+
 ```{r executivesummary, echo=FALSE}
 
 # Using fread for fast and friendly import of sequence_summary file
@@ -157,9 +158,10 @@ knitr::include_graphics(file.path("Results", "ExecutiveSummaryValueBoxes.png"), 
 
 ```
 
-Basecalling was performed using the **`r config$basecaller`** software. Called reads were classified as either pass or fail depending on their mean quality score. For this analysis, a total of `r formatC(nrow(sequencedata), big.mark=",")` reads were basecalled and of these `r formatC(nrow(passedSeqs), big.mark=",")` (`r round(nrow(passedSeqs) / nrow(sequencedata) * 100, 1)`%) were passed as satisfying the quality metric. The passed reads contain a total of `r round(passedBases, 2)` Gb of DNA sequence. This passed-fraction amounts to `r round(passedBases / totalBases * 100, 1)`% of the total DNA nucleotide bases sequenced.
+Basecalling was performed using the **`r config$basecaller`** software. Called reads were classified as either pass or fail depending on their mean quality score. For this analysis, a total of **`r formatC(nrow(sequencedata), big.mark=",")` reads** were basecalled and of these **`r formatC(nrow(passedSeqs), big.mark=",")` (`r round(nrow(passedSeqs) / nrow(sequencedata) * 100, 1)`%)** were passed as satisfying the quality metric. The passed reads contain a total of **`r round(passedBases, 2)` Gb of DNA sequence**. This passed-fraction amounts to **`r round(passedBases / totalBases * 100, 1)`% of the total DNA nucleotide bases sequenced**.
 
 ```{r qcPassGauge, echo=FALSE, include=TRUE, fig.align="center", fig.width=4}
+
 df <- data.frame(matrix(nrow=1, ncol = 3))
 
 names(df) <- c("variable", "percentage","label")
@@ -194,6 +196,7 @@ ggplot(df, aes(fill = group, ymax = percentage, ymin = 0, xmax = 2, xmin = 1)) +
 The nanopores through which DNA is passed, and signal collected, are arrayed as a 2-dimensional matrix. A heatmap can be plotted showing channel productivity against spatial position on the matrix. Such a plot enables the identification of spatial artifacts that could result from membrane damage through e.g. the introduction of an air-bubble. This heatmap representation of spatial activity shows only gross spatial aberations. Since each channel can address four differemnt pores (Mux) the activity plot below shows the number of sequences produced per channel, not per pore. 
 
 ```{r channel_plot, include=TRUE, echo=FALSE, fig.fullwidth = TRUE}
+
 # create an empty read count container ... MinION or PromethION??
 
 # https://gist.github.com/roblanf/df47b9748c3aae00809cc675aca79989
@@ -256,6 +259,7 @@ ggplot(channelMap, aes(x = row, y = col, fill = count)) +
 # Quality and length
 
 The distribution of base-called DNA sequence lengths and their accompanying qualities are key metrics for the review of a sequencing library. This section of the QC review tutorial assesses the length and quality distributions for reads from this flowcell. We will review the total collection of sequences, including those that fail the mean quality filter.
+
 ```{r summaryStatMeasures, include=FALSE, echo=FALSE}
 
 lenSorted <- rev(sort(passedSeqs$sequence_length_template))
@@ -265,7 +269,9 @@ passedMeanQ = round(mean(passedSeqs$mean_qscore_template), digits = 1)
 failedMeanQ = round(mean(failedSeqs$mean_qscore_template), digits = 1)
 
 #N50 length is the length of the shortest contig such that the sum of contigs of equal length or longer is at least 50% of the total length of all contigs
+
 ```
+
 ```{r seqInfoPlot, include=TRUE, echo=FALSE, fig.fullwidth = TRUE, dpi=360, fig.width=9, fig.height=3}
 
 figures <- 5
@@ -297,6 +303,7 @@ ggsave(file.path("Results", "ReadCharacteristicsValueBoxes.png"), plot=ReadChara
 knitr::include_graphics(file.path("Results", "ReadCharacteristicsValueBoxes.png"), dpi=NA)
 
 ```
+
 The distribution of sequence lengths will be dependent on the protocols that have been used to extract and/or prepare the starting DNA. Sequences from amplicon DNA will have a tight distribution of read lengths, while sequences from genomic DNA will have a broader distribution. The distribution will be further influenced if a size-selection step has been used, and will also be dependent on the choice of sequencing library preparation kits. The read-length distribution should be assessed to see if the distribution is concordant with that expected.
 
 \hfill\break
@@ -347,7 +354,9 @@ ggplot(binnedBaseMelt, aes(x=length, fill=variable, y=value)) +
     annotate("text", x=passedMeanLength, y=max(passedBinnedBases + failedBinnedBases), label = " Mean", hjust=0, colour="SteelBlue")
 
 ```
+
 The weighted read length histogram above shows the binned distribution of sequence length against number of sequence nucleotides contained within the bin. This plot will show clear peaks if for example, amplicons are sequenced or if size selection has been performed. The histogram includes annotations for N50 and mean sequence sizes. N50 describes the sequence length where 50% of the sequenced bases are contained within reads of this length, or longer. The mean sequence length is the average sequence length across the whole sequence collection.
+
 ```{r lengthdistribution, include=TRUE, cache=FALSE, fig.fullwidth=FALSE, echo=FALSE}
 
 scrapeBinnedReads <- function(level, qcpass) {
@@ -373,7 +382,9 @@ ggplot(binnedReadMelt, aes(x=length, fill=variable, y=value)) +
     annotate("text", x=passedMeanLength, y=max(passedBinnedReads + failedBinnedReads), label = " Mean", hjust=0, colour="SteelBlue")
 
 ```
+
 \hfill\break
+
 A histogram of mean QV scores reveals the relative abundance of sequences of different qualities. The distribution of sequence qualities is shaded by the QV filter pass status. This QV filter is applied during the base-calling process as a modifiable parameter. For downstream analyses we recommend processing only the higher-quality sequence reads. The histogram includes annotations for N50 and mean sequence sizes. N50 describes the sequence length where 50% of the sequenced bases are contained within reads of this length, or longer. The mean sequence length is the average sequence length across the whole sequence collection.
 \hfill\break
 
@@ -388,9 +399,13 @@ ggplot(sequencedata, aes(x=mean_qscore_template, fill=passes_filtering)) +
 ```
 
 \hfill\break
+
 The plot above shows the distribution of mean read quality scores across the whole sequence collection. The distribution has been shaded for the sequence reads that have passed or failed the base-callers quality filter.
+
 \hfill\break
+
 ```{r lengthQualityDensityPlots, include=TRUE, cache=FALSE, echo=FALSE, warning=FALSE}
+
 # prepare the density plot, but do not render
 lq_dens <- ggplot(sequencedata, aes(log10(sequence_length_template), mean_qscore_template)) + geom_bin2d(bins=100)
 # extract the density map from the plot
@@ -409,10 +424,13 @@ ggplot(lq_dens_counts) +
   scale_x_continuous(breaks = c(1,2,3,4,5), label = c("10", "100", "1000", "10,000", "100,000")) +
   annotation_logticks(base = 10, sides = "b", scaled = TRUE) +
   labs(title="Contour Plot showing distribution of quality scores against log10 read lengths (all reads)")
+
 ```
 
 \hfill\break
+
 The density plot of mean sequence quality plotted against log10 sequence length is a useful graphic to show patterns within the broader sequence collection. The density plot shown in the figure below has been de-speckled by omitting the rarer sequence bins containing only `r binFilter` reads or fewer have been omitted. This is mainly aesthetic and masks some speckle around the periphery of the main density map. 
+
 \hfill\break
 
 \pagebreak
@@ -424,6 +442,7 @@ Another key metric in the quality review of a sequencing run is an analysis of t
 \hfill\break
 
 Plotting the number of bases generated per unit time over the course of a sequencing run can reveal unexpected behaviours. In an ideal experiment there should not be any sudden decreases in performance.
+
 ```{r basesPerTimeBin, include=TRUE, cache=FALSE, echo=FALSE}
 
 sequencedata$start_time <- sequencedata$start_time - min(sequencedata$start_time)
@@ -468,7 +487,10 @@ ggplot(binnedTemporalDataPerHour, aes(time)) +
   labs(title="Plot showing sequence throughput against time")
 
 ```
+
+
 The temporal data presented in the figure above has been scaled to gigabases of sequence produced per hour. For a finer resolution of performance the **`R`** code that prepares this report could be modified for a more frequent sample interval. 
+
 ```{r temporalPerformance, echo=FALSE}
 
 # binnedTemporalDataPerHour is scaled to Gbp per hour - rescale to raw for cumulative plotting
@@ -486,8 +508,8 @@ T50 <- optimize(function(t0) abs(targetInterpolate(t0) - base50),
                 interval = range(binnedTemporalDataPerHour[acquireTimePoints, "time"]))
 T90 <- optimize(function(t0) abs(targetInterpolate(t0) - base90), 
                 interval = range(binnedTemporalDataPerHour[acquireTimePoints, "time"]))
+                
 ```
-
 
 ```{r cumulativeSequencePlotBP, include=TRUE, cache=FALSE, echo=FALSE, fig.margin=FALSE}
 
@@ -508,6 +530,7 @@ ggplot(binnedTemporalDataPerHour, aes(time)) +
 ```
 
 In addition to plotting the temporal production of data, the cumulative plot shown above shows how data is accumulated during the run. From this dataset, we have measured a total of `r round(sum(passedSeqs$sequence_length_template)/1e9, 2)` Gb of quality passing sequence. We can identify the timepoint T50, where 50% of sequenced bases have been collected within this time - or `r round(T50$minimum, 2)` hours in this example. This is displayed on the graph along with T90, the time at which 90% of the sequenced based have been acquired.
+
 ```{r cumulativeSequencePlotReads, include=TRUE, cache=FALSE, echo=FALSE, fig.margin=TRUE}
 
 mergeItReadsPerHour <- function(interval, binnedAssignments,filter) {
@@ -549,11 +572,13 @@ In addition to the cumulative plot of sequenced bases, an equivalent plot for th
 \hfill\break
 
 The speed/time plot is a useful tool to observe any substantial changes in sequencing speed. A marked slow-down in sequencing speed can indicate challenges within the sequencing chemistry that could have been caused by the method of DNA isolation or an abundance of small DNA fragments. Please contact our technical team if you see a profound slowdown with your sequencing.
+
 ```{r timeSpeedPlot, include=TRUE, cache=FALSE, echo=FALSE}
 
 speedTime <- data.frame(segment=binass, rate=sequencedata$sequence_length_template / (sequencedata$duration/scaling))
 
 ggplot(speedTime, aes(x=segment, y=rate, group=segment)) + geom_boxplot(fill="steelblue", outlier.shape=NA) +scale_x_continuous(name="Time (hours)") + ylab("Sequencing rate (bases per second)") + labs(title="boxplot showing distribution of translocation speed against time")
+
 ```
 
 The data points shown in the speed-time plot shown above have been filtered to mask outlying sequences (sequences beyond the 95% range). The distribution of the boxplots and their 'whiskers' are unchanged.
@@ -561,21 +586,25 @@ The data points shown in the speed-time plot shown above have been filtered to m
 \hfill\break
 
 The quality/time plot is a useful tool to observe any substantial changes in sequencing quality (mean_qscore_template). A marked decay in sequencing quality can indicate challenges within the sequencing chemistry. Please contact our technical team if you see a profound quality loss with your sequencing.
+
 ```{r qualitySpeedPlot, include=TRUE, cache=FALSE, echo=FALSE}
 qualityTime <- data.frame(segment=binass, pass=sequencedata$passes_filtering, avgqual=sequencedata$mean_qscore_template)
 qualityTimePass <- subset(qualityTime, qualityTime$pass==TRUE)
 #qualityTimeFail <- subset(qualityTime, qualityTime$pass==FALSE)
 
 ggplot(qualityTime, aes(x=segment, y=avgqual, group=segment)) + geom_boxplot(fill="steelblue", outlier.shape=NA) + scale_x_continuous(name="Time (hours)") + scale_y_continuous(limits = c(0,15)) + ylab("read mean quality") + labs(title="boxplot showing distribution of 'mean_qscore_template' values against time (from All reads)")
+
 ```
 
 The plot for only PASS reads is added next
+
 ```{r qualitySpeedPlotPass, include=TRUE, cache=FALSE, echo=FALSE}
 qualityTime <- data.frame(segment=binass, pass=sequencedata$passes_filtering, avgqual=sequencedata$mean_qscore_template)
 qualityTimePass <- subset(qualityTime, qualityTime$pass==TRUE)
 #qualityTimeFail <- subset(qualityTime, qualityTime$pass==FALSE)
 
 ggplot(qualityTimePass, aes(x=segment, y=avgqual, group=segment)) + geom_boxplot(fill="steelblue", outlier.shape=NA) +scale_x_continuous(name="Time (hours)") + scale_y_continuous(limits = c(0,15)) + ylab("read mean quality") + labs(title="boxplot showing distribution of 'mean_qscore_template' values against time (from 'Pass reads' only)") + geom_hline(yintercept = qcThreshold, size = 1)
+
 ```
 
 The black line corresponds to the quality cutoff used to define 'Pass reads'. 
@@ -602,6 +631,7 @@ ggplot(binnedTemporalChannels, aes(time)) +
   xlab("Time (hours)") + 
   ylab("Number of channels producing data") + 
   labs(title="Plot showing number of functional channels against time")
+
 ```
 
 The graph presented above shows the number of sequencing channels that are actively producing data across time. A channel is defined as being active if one or more sequence reads are observed per time window (one hour for the default graph). It is expected that over the course of the run pores will block and the number of channels producing data will decrease. Changing the pore used by the channel (mux) and strategies to unblock pores mean that the number of functional channels may increase or decrease at a given timepoint but generally the number of channels producing data will decrease over time.
@@ -609,6 +639,7 @@ The graph presented above shows the number of sequencing channels that are activ
 \pagebreak
 
 # Demultiplexing
+
 ```{r demultiplex, cache=FALSE, echo=FALSE}
 barcodes = 0
 barcodeUnass = 0
@@ -630,8 +661,11 @@ if (!"barcode_arrangement" %in% colnames(passedSeqs)) {
   }
 
 }
+
 ```
+
 ```{r demultiplexB, cache=FALSE, echo=FALSE}
+
 if ("barcode_arrangement" %in% names(passedSeqs)) {
   barcodedata=plyr::count(passedSeqs$barcode_arrangement)
   barcodedata=subset(barcodedata, freq > 150)
@@ -658,9 +692,11 @@ df <- data.frame(
     df$key <- c("Reads with barcode (%)","Barcoded libraries", "barcode variance")
     df$icon <- fontawesome(c('fa-pie-chart', 'fa-barcode', 'fa-sliders'))
     df$colour <- rep("steelblue", figures)
+    
 ```
 
 ```{r pseudoValueBarcodes, include=TRUE, echo=FALSE, fig.fullwidth = TRUE, dpi=360, fig.width=9, fig.height=2.5}
+
 if (barcodes > 0) {
 
 MultiplexCharacteristicsValueBoxes <- ggplot(df, aes(x, y, height = h, width = w, label = key, fill = colour)) +
@@ -678,10 +714,11 @@ ggsave(file.path("Results", "MultiplexCharacteristicsValueBoxes.png"), plot=Mult
 knitr::include_graphics(file.path("Results", "MultiplexCharacteristicsValueBoxes.png"), dpi=NA)
 
 }
+
 ```
 
-
 ```{r convenienceScoringLibraries, echo=FALSE}
+
 if (barcodes > 0) {
 
 # https://www.ncbi.nlm.nih.gov/assembly/help/
@@ -727,11 +764,13 @@ barcodedata <- cbind(barcodedata, L50=unlist(lapply(as.character(barcodedata$bar
 kable(barcodedata, format="markdown", caption="Table summarising barcode content")
 
 }
+
 ```
 
 `r if (barcodes > 0) {"The table above shows summary statistics for the barcode assignments within this sequence collection. The annotated barcode is presented along with the number of sequence reads assigned to it (freq), the percentage of reads assigned to the barcode (%), the megabases of DNA sequence (Mb), shortest read in nucleotides (min), longest read in nucleotides (max), mean sequence length in nucleotides (mean) and N50 and L50 values, again in nucleotides."}`
 
 ```{r demultiplex_plot, include=TRUE, echo=FALSE, cache=FALSE, fig.margin=TRUE}
+
 if (barcodes > 0) {
   if ("barcode_arrangement" %in% names(passedSeqs)) {
     # it's a run that used the --barcoding flag
@@ -747,6 +786,7 @@ if (barcodes > 0) {
         theme(axis.text.x = element_text(angle=45, hjust=1))
   }
 }
+
 ```
 
 `r if (barcodes > 0) {"The histogram above shows the abundance of different barcodes within the sequence collection. The size of the bar corresponds to the frequency of the observation - this is the number of sequence reads observed."}`
@@ -768,8 +808,10 @@ if (barcodes > 0) {
 \fontsize{8}{12}
 
 ```{r sessionInfo, eval=FALSE, echo=FALSE, comment=NA}
+
 options(width = 100)
 utils:::print.sessionInfo(sessionInfo()[-7], locale=FALSE)
+
 ```
 
 \fontsize{10}{14}

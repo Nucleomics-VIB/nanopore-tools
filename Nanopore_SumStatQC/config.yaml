@@ -4,7 +4,7 @@ inputFile: "RawData/data.bz2"
 barcodeFile: ""
 basecaller: "Guppy 3.2.6 - X5 Mk1-GPU (hac)"
 flowcellId: "<edit here>"
-flowcellType: "FLO-MIN106"
+flowcellType: "FLO-MIN106/FLO-FLG001/FLGOP1"
 seqKit: "SQK-RAD004/SQK-LSK109"
 tutorialText: FALSE
 sampleHours: 72
