@@ -23,6 +23,10 @@ bibliography: Static/Bibliography.bib
 # call with:
 # R --slave -e 'rmarkdown::render("Nanopore_SumStatQC.Rmd", "html_document")'
 
+###################################################################################
+# this code was modified from https://github.com/nanoporetech/ont_tutorial_basicqc
+###################################################################################
+
 knitr::opts_chunk$set(fig.width=9, fig.height=6, warning=FALSE, message=FALSE, tidy = FALSE, cache.extra = packageVersion('tufte'), cache.path = "Results/KnitR")
 options(htmltools.dir.version = FALSE)
 
