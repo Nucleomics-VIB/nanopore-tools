@@ -73,7 +73,7 @@ setB:
 * R --slave -e 'rmarkdown::render("Nanopore_SumStatQC.Rmd", "pdf_document")'
 * R --slave -e 'rmarkdown::render("Nanopore_SumStatQC.Rmd", "html_document")'
 
-A significant number of R dependencies are required (see top of the code)
+A significant number of R dependencies are required (see top of the code). Please refer to the original ONT code and repo for info on installing resources and for acknowlegments.
 
 <hr>
 
