@@ -66,6 +66,13 @@ setB:
 # [-h for this help]
 ```
 
+**[Nanopore_SumStatQC.Rmd](Nanopore_SumStatQC.Rmd)** is a slightly modified copy of the original **[ont_tutorial_basicqc](https://github.com/nanoporetech/ont_tutorial_basicqc)** R markdown. The file depends on the accessory config.yaml where the user edits the metadata. The report is then produced as PDF or HTML using either
+
+* R --slave -e 'rmarkdown::render("Nanopore_SumStatQC.Rmd", "pdf_document")'
+* R --slave -e 'rmarkdown::render("Nanopore_SumStatQC.Rmd", "html_document")'
+
+A significant number of R dependencies are required (see top of the code)
+
 <hr>
 
 <h4>Please send comments and feedback to <a href="mailto:nucleomics.bioinformatics@vib.be">nucleomics.bioinformatics@vib.be</a></h4>
