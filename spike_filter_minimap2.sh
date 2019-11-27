@@ -6,7 +6,8 @@
 #  extract reads aligned / not-aligned from SAM (samtools view -F/-f 4)
 #  convert aligned / not-aligned SAM data back to fastq (samtools fastq)
 #
-# Stephane Plaisance (VIB-NC) 2018/11/01; v1.0
+# Stephane Plaisance (VIB-NC) 2018/11/01; v1.1
+# added min mapping quality filter
 
 # required (tested versions)
 # samtools (1.x, htslib)
@@ -16,19 +17,23 @@ read -d '' usage <<- EOF
 Usage: spike_filter_minimap2.sh 
 #   -i <nanopore_reads.fastq (required)>
 #   -r <spiked reference (lambda or any other spiked genome, required)>
+#   -q <minimal mapping quality to consider a reads aligment (default to 0)>
 #   -t <threads to be used for alignment (default to 8)>
 #   -x <full path to minimap2 if not in PATH>
 #   -s <keep only spiked reads instead (reverse-mode)>
 #   -h <show this help>
 EOF
 
-while getopts "i:r:t:x:sh" opt; do
+while getopts "i:r:q:t:x:sh" opt; do
 	case $opt in
 		i)
 		  infile=${OPTARG}
 		  ;;
 		r)
 		  reference=${OPTARG}
+		  ;;
+		q)
+		  mapqual=${OPTARG}
 		  ;;
 		t)
 		  threads=${OPTARG}
@@ -87,6 +92,9 @@ echo "${usage}"
 exit 1
 fi
 
+# minimal mapping quality to consider read alignment
+minq=${mapqual:-0}
+
 # filter out or keep the spiked alignments
 if [ -n "${keepspiked}" ]; then
 samfilter="-F 4"
@@ -125,7 +133,7 @@ echo "# aligning: ${cmd1} using ${minimap_exe}"
 # converting back to fastq
 # samtools fastq ${outpath}/unmapped.sam | bgzip -c > ${outpath}/${prefix}_${outbase%.gz}.gz
 
-cmd2="samtools view ${samfilter} -bS - \
+cmd2="samtools view ${samfilter} -bSq ${minq} - \
 	| samtools fastq - \
 	| bgzip -c > ${outpath}/${prefix}_${outbase%.gz}.gz"
 echo "# filtering: ${cmd2}"
