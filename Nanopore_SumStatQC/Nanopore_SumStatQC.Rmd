@@ -27,7 +27,14 @@ bibliography: Static/Bibliography.bib
 # this code was modified from https://github.com/nanoporetech/ont_tutorial_basicqc
 ###################################################################################
 
-knitr::opts_chunk$set(fig.width=9, fig.height=6, warning=FALSE, message=FALSE, tidy = FALSE, cache.extra = packageVersion('tufte'), cache.path = "Results/KnitR")
+knitr::opts_chunk$set(fig.width=9, 
+	fig.height=6, 
+	warning=FALSE, 
+	message=FALSE, 
+	tidy = FALSE, 
+	cache.extra = packageVersion('tufte'), 
+	cache.path = "Results/KnitR")
+	
 options(htmltools.dir.version = FALSE)
 
 library(R.utils)

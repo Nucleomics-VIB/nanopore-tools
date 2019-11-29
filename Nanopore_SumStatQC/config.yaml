@@ -11,4 +11,3 @@ sampleHours: 72
 sampleIntervalMinutes: 60
 # read length percentile limit, default to 0.975 to remove outliers
 readlenpercentile: 1
-
