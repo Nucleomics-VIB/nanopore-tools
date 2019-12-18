@@ -43,6 +43,10 @@ echo "# concatenating all reads to a single fastq.gz file"
 cat $(find ${runf}/fastq_pass -name *.fastq | sort -k 1V,1) \
 	| bgzip -c > ${tmpf}/${pfx}_pass.fq.gz
 
+echo "# creating checksum and checking it"
+md5sum ${tmpf}/${pfx}_pass.fq.gz > ${tmpf}/${pfx}_pass.fq.gz_md5.txt && \
+md5sum -c ${tmpf}/${pfx}_pass.fq.gz_md5.txt
+
 # copy Nanopore_SumStatQC files if present
 if [ -d "Nanopore_SumStatQC" ]; then
 	cp Nanopore_SumStatQC/config.yaml ${tmpf}/
