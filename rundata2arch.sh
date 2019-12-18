@@ -32,7 +32,7 @@ mkdir -p ${tmpf}
 
 # copy and rename gridion run-report
 echo "# copying the ONT run report"
-cp ${runf}/report.pdf ${tmpf}/${pfx}_report.pdf
+cp ${runf}/report_*.pdf ${tmpf}/${pfx}_report.pdf
 
 # archive gridion run stat files
 echo "# archiving run stat files to ${pfx}_run_info.tgz"
