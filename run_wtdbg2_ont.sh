@@ -20,19 +20,25 @@ thr2=$((${thr}/10))
 
 # create folder t store all results
 mkdir -p $(dirname ${prefix})
+stamp=$(date +%s)
+logfile=$(dirname ${prefix})/wtdbg2_run_log_${stamp}.txt
 
 # assemble long reads
-wtdbg2 -x ${platform} -g ${genomesize} -i ${reads} -t ${thr} -fo ${prefix}
+wtdbg2 -x ${platform} -g ${genomesize} -i ${reads} -t ${thr} -fo ${prefix} \
+	> ${logfile} 2>&1
 
 # derive consensus
-wtpoa-cns -t ${thr} -i ${prefix}.ctg.lay.gz -fo ${prefix}.raw.fa
+wtpoa-cns -t ${thr} -i ${prefix}.ctg.lay.gz -fo ${prefix}.raw.fa \
+	>> ${logfile} 2>&1
 
 # polish consensus, not necessary if you want to polish the assemblies using other tools
 minimap2 -t ${thr} -ax ${mm2x} -r2k ${prefix}.raw.fa ${reads} | \
-	samtools sort -@ ${thr2} >${prefix}.bam
+	samtools sort -@ ${thr2} >${prefix}.bam \
+	>> ${logfile} 2>&1
 
 samtools view -F0x900 ${prefix}.bam | \
-	wtpoa-cns -t ${thr} -d ${prefix}.raw.fa -i - -fo ${prefix}.cns.fa
+	wtpoa-cns -t ${thr} -d ${prefix}.raw.fa -i - -fo ${prefix}.cns.fa \
+	>> ${logfile} 2>&1
 
 # Addtional polishing using Illumina paired reads
 # reads_1=<path to forward reads>

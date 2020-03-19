@@ -5,7 +5,10 @@
 #
 # visit our Git: https://github.com/Nucleomics-VIB
 
-# requires quast installed and running                                                                                                                                                                                                                                                                                                                                                                                    # required once: create a conda env to install the required apps                                                                                                                                             # adapt next line to point to the right conda.sh init script                                                                                                                                                 # see conda activate script for details                                                                                                                                                                      
+# requires quast installed and running
+# required once: create a conda env to install the required apps
+# adapt next line to point to the right conda.sh init script
+# see conda activate script for details
 source /etc/profile.d/conda.sh
 conda activate atwork3 || \
   ( echo "# the conda environment 'atwork3' adding BUSCO was not found on this machine" ;
@@ -22,9 +25,13 @@ input=( $(find assemblies -name "*.fa*" | sort -h) )
 labels=$(find assemblies -name "*.fa*" | sort -h | \
 	sed -e 's/assemblies\///g' | tr "\n" "," | sed 's/.$//')
 
-# format read inputs
-reads=( $(find ont_reads -name "*.f*" | sort) )
-reada=( ${reads[@]/#/"--nanopore "} )
+# format read inputs if present
+readfolder="ont_reads"
+declare -a reada
+if [ -d "${readfolder}" ]; then
+	reads=( $(find ${readfolder} -name "*.f*" | sort) )
+	reada=( ${reads[@]/#/"--nanopore "} )
+fi
 
 refg=$(find reference -name "*.fa")
 annot=$(find reference -name "*.gff3")
