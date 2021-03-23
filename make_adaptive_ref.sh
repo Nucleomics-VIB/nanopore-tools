@@ -27,7 +27,7 @@ while getopts "r:b:s:h" opt; do
 done
 
 # check executables present
-declare -a arr=( "samtools" "bedtools")
+declare -a arr=( "samtools" "bedtools" "gawk")
 for prog in "${arr[@]}"; do
 $( hash ${prog} 2>/dev/null ) || ( echo "# required ${prog} not found in PATH"; exit 1 )
 done
@@ -62,7 +62,9 @@ SLOPPED_BED=${BED%.*}_slop-${BASES_TO_EXPAND_PER_SIDE}.bed
 SUBSETTED_FASTA=${REF%.*}-${SLOPPED_BED%.*}.fasta
 
 # index fasta
+if [ -z ${REF}.fai ] ; then
 samtools faidx ${REF}
+fi
 
 # create chr-size file for bedtools
 cut -f1,2 ${REF}.fai > ${CHROM_SIZES}
@@ -72,14 +74,17 @@ sort -k 1V,1 -k 2n,2 ${BED} \
   > sorted_${BED}
 
 # create expanded BED
-bedtools slop -l ${BASES_TO_EXPAND_PER_SIDE} \
+bedtools slop \
+  -l ${BASES_TO_EXPAND_PER_SIDE} \
   -r ${BASES_TO_EXPAND_PER_SIDE} \
   -i sorted_${BED} \
   -g ${CHROM_SIZES} \
-  > ${SLOPPED_BED}_ini
-
-# merge region overlaps where present
-bedtools merge -i ${SLOPPED_BED}_ini \
+  > ini_${SLOPPED_BED}
+  
+# merge region overlaps where present and collapse their descriptions as a csv list
+bedtools merge -i ini_${SLOPPED_BED} \
+  -c 4 \
+  -o collapse \
   > ${SLOPPED_BED}
 
 # extract fasta sequences
@@ -91,6 +96,15 @@ bedtools getfasta -fi ${REF} \
 echo "# the file ${SUBSETTED_FASTA} can be used in Minknow for adaptive sequencing"
 
 exit 0
+
+# create bed track from gff data for genes
+# gawk 'BEGIN{FS="\t"; OFS="\t"}{
+#   if($3=="gene") {
+#     split($9,ann,";"); ensid=gensub(/gene_id \"(.*)\"/,"\\1","g",ann[1]); 
+#     hugo=gensub(/ gene_name \"(.*)\"/,"\\1","g",ann[3]); 
+#     print $1,$4,$5,ensid"|"hugo
+#     }
+#   }' *.gtf > genes.bed
 
 # ref: https://community.nanoporetech.com/info_sheets/adaptive-sampling/v/ads_s1016_v1_revb_12nov2020
 # Navigate to the folder containing your FASTA and .bed files. If they are in different folders, create a link to the location of the FASTA file (if you are
