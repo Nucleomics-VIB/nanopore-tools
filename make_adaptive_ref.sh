@@ -84,7 +84,7 @@ bedtools merge -i ${SLOPPED_BED}_ini \
 
 # extract fasta sequences
 bedtools getfasta -fi ${REF} \
-  -bed ${BED} \
+  -bed ${SLOPPED_BED} \
   -fo ${SUBSETTED_FASTA} \
   -name
 
