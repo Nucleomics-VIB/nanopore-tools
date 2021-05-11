@@ -11,7 +11,7 @@ version="1.0, 2021_03_23"
 usage='# Usage: make_adaptive_ref.sh
 # -r <reference fasta>
 # -b <bed regions>
-# -s <additional edge length (default to 5000)>
+# -s <additional flank length (default to 5000)>
 # script version '${version}'
 # [-h for this help]'
 
