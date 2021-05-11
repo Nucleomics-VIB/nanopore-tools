@@ -153,7 +153,7 @@ chopchop.py -J \
 		-Target ${downstream} \
 		> ${pfx}/downstream_results.txt 2> ${pfx}/downstream_python.err
 
-# filter best hits on + strand   
+# filter best hits on - strand   
 gawk 'BEGIN{FS="\t"; OFS="\t"}{if( (NR==1) || ($4~/-/ && $6==0 && $11>0.3)) print $0}' \
 	${pfx}/downstream_results.txt | column -s $'\t' -t \
 	> ${pfx}/downstream_results-filtered.txt
