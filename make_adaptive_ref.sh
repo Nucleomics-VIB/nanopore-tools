@@ -59,7 +59,7 @@ CHROM_SIZES=${REF}.chrom.sizes
 SLOPPED_BED=${BED%.*}_slop-${BASES_TO_EXPAND_PER_SIDE}.bed
 
 # This is the final file which you will upload into MinKNOW:
-SUBSETTED_FASTA=${REF%.*}-${SLOPPED_BED%.*}.fasta
+SUBSETTED_FASTA=$(basename ${REF%.*})-${SLOPPED_BED%.*}.fasta
 
 # index fasta
 if [ -z ${REF}.fai ] ; then
@@ -86,6 +86,10 @@ bedtools merge -i ini_${SLOPPED_BED} \
   -c 4 \
   -o collapse \
   > ${SLOPPED_BED}
+
+# print total reference width
+TOT_WIDTH=$(gawk 'BEGIN{FS="\t"; OFS="\t";tot=0}{tot=tot+$3-$2}END{print tot}' ${SLOPPED_BED})
+echo "# total reference width in ${SLOPPED_BED} is $TOT_WIDTH bps"
 
 # extract fasta sequences
 bedtools getfasta -fi ${REF} \
