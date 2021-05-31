@@ -88,7 +88,8 @@ bedtools merge -i ini_${SLOPPED_BED} \
   > ${SLOPPED_BED}
 
 # print total reference width
-TOT_WIDTH=$(gawk 'BEGIN{FS="\t"; OFS="\t";tot=0}{tot=tot+$3-$2}END{print tot}' ${SLOPPED_BED})
+TOT_WIDTH=$(gawk 'BEGIN{FS="\t"; OFS="\t";tot=0}{tot=tot+$3-$2}END{print tot}' \
+  ${SLOPPED_BED})
 echo "# total reference width in ${SLOPPED_BED} is $TOT_WIDTH bps"
 
 # extract fasta sequences
