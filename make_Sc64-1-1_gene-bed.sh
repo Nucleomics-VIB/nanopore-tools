@@ -1,12 +1,11 @@
 #!/bin/bash
 
-# script: make_hg38_gene_bed.sh
 # create reference gene BED for adaptive sampling
 
-# hg38 from ensembl
-reflink="http://ftp.ensembl.org/pub/release-103/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz"
-gfflink="http://ftp.ensembl.org/pub/release-103/gff3/homo_sapiens/Homo_sapiens.GRCh38.103.chr.gff3.gz"
-gtflink="http://ftp.ensembl.org/pub/release-103/gtf/homo_sapiens/Homo_sapiens.GRCh38.103.chr.gtf.gz"
+# Sc64-1-1 from ensembl
+reflink="http://ftp.ensembl.org/pub/release-104/fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa.gz"
+gfflink="http://ftp.ensembl.org/pub/release-104/gff3/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.104.gff3.gz"
+gtflink="http://ftp.ensembl.org/pub/release-104/gtf/saccharomyces_cerevisiae/Saccharomyces_cerevisiae.R64-1-1.104.gtf.gz"
 
 for link in ${reflink} ${gfflink} ${gtflink}; do
 wget ${link}
@@ -32,3 +31,6 @@ gawk 'BEGIN{FS="\t"; OFS="\t"}{
 
 # count per chromosome and save
 cut -f 1 genes.bed | sort | uniq -c | sort -k 2V,2 | awk '{print $2, $1}' > genecounts.txt
+
+# count gene size
+gawk 'BEGIN{FS="\t"; OFS="\t";tot=0}{tot=tot+$3-$2}END{print tot}' genes.bed >> genecounts.txt
