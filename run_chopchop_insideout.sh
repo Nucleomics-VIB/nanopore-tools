@@ -18,12 +18,6 @@ usage='# Usage: run_chopchop_insideout.sh
 # script version '${version}'
 # [-h for this help]'
 
-usage='# Usage: run_chopchop_single.sh
-# -r <region (eg. chr1:16920000-16940000)>
-# -g <reference genome used by ChopChop (default to hg38)>
-# script version '${version}'
-# [-h for this help]'
-
 while getopts "r:g:h" opt; do
   case $opt in
     r) optr=${OPTARG} ;;
