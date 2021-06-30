@@ -26,7 +26,7 @@ while getopts "r:b:s:h" opt; do
   esac
 done
 
-# check executables present
+# check executable present
 declare -a arr=( "samtools" "bedtools" "gawk")
 for prog in "${arr[@]}"; do
 $( hash ${prog} 2>/dev/null ) || ( echo "# required ${prog} not found in PATH"; exit 1 )
@@ -56,13 +56,13 @@ BASES_TO_EXPAND_PER_SIDE=${opts:-5000}
 
 # OUTPUTS
 CHROM_SIZES=${REF}.chrom.sizes
-SLOPPED_BED=${BED%.*}_slop-${BASES_TO_EXPAND_PER_SIDE}.bed
+SLOPPED_BED=${BED%.*}_slop_${BASES_TO_EXPAND_PER_SIDE}.bed
 
 # This is the final file which you will upload into MinKNOW:
-SUBSETTED_FASTA=$(basename ${REF%.*})-${SLOPPED_BED%.*}.fasta
+SUBSETTED_FASTA=$(basename ${REF%.*})_${SLOPPED_BED%.*}.fasta
 
-# index fasta
-if [ -z ${REF}.fai ] ; then
+# index fasta if absent
+if [ ! -f "${REF}.fai" ] ; then
 samtools faidx ${REF}
 fi
 
@@ -80,7 +80,7 @@ bedtools slop \
   -i sorted_${BED} \
   -g ${CHROM_SIZES} \
   > ini_${SLOPPED_BED}
-  
+
 # merge region overlaps where present and collapse their descriptions as a csv list
 bedtools merge -i ini_${SLOPPED_BED} \
   -c 4 \
@@ -112,31 +112,3 @@ exit 0
 #   }' *.gtf > genes.bed
 
 # ref: https://community.nanoporetech.com/info_sheets/adaptive-sampling/v/ads_s1016_v1_revb_12nov2020
-# Navigate to the folder containing your FASTA and .bed files. If they are in different folders, create a link to the location of the FASTA file (if you are
-# already in the folder containing the .bed file):
-# ln -s /long/path/to/my/reference/in/different/folder/myref.fasta myref.fasta
-# REF=myref.fasta
-# or the .bed file (if you are already in the folder containing the FASTA file):
-# ln -s /long/path/to/my/bed/in/different/folder/mybed.bed mybed.bed
-# BED=mybed.bed
-# 4. Edit the settings for your reference and your .bed with target regions:
-# BASES_TO_EXPAND_PER_SIDE=half of your expected N50. For example, set 5000, i.e. 5000 bp either side for a N50 = 10 kb run.
-# REF=your_reference.fasta
-# BED=your_bed_with_target_regions.bed
-# (The subsetted FASTA file will be called your_reference-your_bed_with_target_regions.fasta)
-# These are the intermediate files that will be created:
-# CHROM_SIZES=${REF}.chrom.sizes
-# SLOPPED_BED=${BED%.*}_slop-${BASES_TO_EXPAND_PER_SIDE}.bed
-# These will be saved in the same location where the commands are being run, and will remain until they are deleted.
-# This is the final file which you will upload into MinKNOW:
-# SUBSETTED_FASTA=${REF%.}-${SLOPPED_BED%.}.fasta
-# This is also saved in the same location where the commands are being run.
-# 5. Index the reference and get chromosome sizes:
-# samtools faidx ${REF}
-# cut -f1,2 ${REF}.fai > ${CHROM_SIZES}
-# 6. Expand the .bed and extract the FASTA from the expanded .bed:
-# bedtools slop -l ${BASES_TO_EXPAND_PER_SIDE} -r ${BASES_TO_EXPAND_PER_SIDE} -i ${BED} -g ${CHROM_SIZES} > ${SLOPPED_BED}
-# bedtools getfasta -fi ${REF} -bed ${BED} -fo ${SUBSETTED_FASTA} -name
-# These commands take the .bed file that contains the regions of interest and add a number of bases on either side of the ROI. This is to ensure that
-# during adaptive sampling, reads which are on the boundary of the ROIs have the chance of overlapping the ROI when they are fully read.
-# 7. Copy the subsetted FASTA file to your MinION Mk1C.
