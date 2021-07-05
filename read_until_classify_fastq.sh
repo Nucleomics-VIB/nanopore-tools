@@ -7,8 +7,8 @@
 # print reads in fastq format to new files with classification in the name
 
 usage='# Usage: read_until_classify_fastq.sh
-# -r <read_until_file (eg. read_until_FAQ08767_7379d056.csv)>
-# -f <fastq folder>
+# -r <read_until_file (eg. other_reports/read_until_<FCID>_<runID>.csv)>
+# -f <merged fastq file (can be gzipped)>
 # script version '${version}'
 # [-h for this help]'
 
@@ -25,30 +25,36 @@ done
 # check INPUTS
 if [ -z "${optr}" ]
 then
-  echo "# provide a read_until summary file (eg read_until_FAQ08767_7379d056.csv)"
+  echo "# provide the path to the read_until summary file (eg other_reports/read_until_<FCID>_<runID>.csv)"
   echo "${usage}" >&2
   exit 0
 fi
 
 if [ -z "${optf}" ]
 then
-  echo "# provide a path containing fastq files (eg fastq_pass)"
+  echo "# provide the path to a merged fastq file (can be gzipped)"
   echo "${usage}" >&2
   exit 0
 fi
 
-bioawk -c fastx -v rufile="${optr}" '
+# store results in to folder with prefix
+outpath="$(dirname ${optf})_split"
+outpfx="$(basename ${optf} .fq.gz)"
+mkdir -p ${outpath}
+
+bioawk -c fastx -v rufile="${optr}" -v outp="${outpath}/${outpfx}" '
 BEGIN{
   FS=","; 
   OFS="\t";
+  countfile=outp"_read_until_counts.txt";
   while((getline line <rufile)>0) {
     split(line, f, ","); decision[f[6]]=f[8]};
- print "read_id","read_length","classified" > "read_until_counts.txt"
- }
+  print "read_id","read_length","classified" > countfile
+  }
 {
-split($name, info, " ");
-if (decision[info[1]] == "") decision[info[1]]="absent";
-fastqfile=decision[info[1]]".fq";
-print "@"$name" "$comment"\n"$seq"\n+\n"$qual >>fastqfile;
-print info[1], length($seq), decision[info[1]] >>"read_until_counts.txt"
-}' ${optf}/*.fastq
+  split($name, info, " ");
+  if (decision[info[1]] == "") decision[info[1]]="absent";
+  fastqfile=outp"_"decision[info[1]]".fq";
+  print "@"$name" "$comment"\n"$seq"\n+\n"$qual >> fastqfile;
+  print info[1], length($seq), decision[info[1]] >> countfile
+  }' ${optf}
