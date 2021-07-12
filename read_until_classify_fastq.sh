@@ -22,6 +22,12 @@ while getopts "r:f:h" opt; do
   esac
 done
 
+# check executables present
+declare -a arr=( "bioawk" )
+for prog in "${arr[@]}"; do
+$( hash ${prog} 2>/dev/null ) || ( echo "# required ${prog} not found in PATH"; exit 1 )
+done
+
 # check INPUTS
 if [ -z "${optr}" ]
 then
