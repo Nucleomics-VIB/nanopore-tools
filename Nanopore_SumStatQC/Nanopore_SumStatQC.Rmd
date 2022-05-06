@@ -15,6 +15,7 @@ output:
       collapsed: yes
       smooth_scroll: yes
     df_print: paged
+classoption: a4paper
 link-citations: yes
 bibliography: Static/Bibliography.bib
 ---
