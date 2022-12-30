@@ -17,15 +17,19 @@ usage='# Usage: run_guppy_sup.sh
 # -b <barcode kit (eg: SQK-RBK004; default without demultiplexing)>
 # -p <allow_inferior_barcodes (default off)>
 # script version '${version}'
+# -l get the list of all current config files
 # [-h for this help]'
 
-while getopts "i:s:c:b:ph" opt; do
+while getopts "i:s:c:b:plh" opt; do
   case $opt in
     i) opti=${OPTARG} ;;
     s) opts=${OPTARG} ;;
     c) optc=${OPTARG} ;;
     b) optb=${OPTARG} ;;
     p) optp=true ;;
+    l) echo "# list of all current workflows"; \
+       guppy_basecaller --print_workflows; \
+       exit 0 ;;
     h) echo "${usage}" >&2; exit 0 ;;
     \?) echo "Invalid option: -${OPTARG}" >&2; exit 1 ;;
     *) echo "this command requires arguments, try -h" >&2; exit 1 ;;
